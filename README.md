@@ -2,7 +2,8 @@
 
 ## Soal 1
 ### 1. Download file passenger.csv
-<img width="871" height="512" alt="Screenshot 2026-03-19 065019" src="https://github.com/user-attachments/assets/f973193f-14f3-4a3b-89a5-f24f0f452d8e" />
+<img width="500" height="362" alt="Screenshot 2026-03-18 143011" src="https://github.com/user-attachments/assets/8dfc37a8-5f2b-41e7-af3e-43d857c32895" />
+
 
 ### 2. Membuat program sesuai soal
 ```bash
