@@ -64,5 +64,20 @@ END {
 }
 ```
 
-# 3. Analisis hasil
+### 3. Analisis hasil
 Mencoba hasil output:
+<img width="486" height="250" alt="Screenshot 2026-03-20 161431" src="https://github.com/user-attachments/assets/0296989a-c112-4e90-822b-78db8f5f39bb" />
+
+Setelah dicoba hasil outputnya, ternyata pada opsi b menunjukkan bahwa total gerbongnya ada 5. Untuk itu, saya membuat program untuk melihat apa saja isi gerbongnya.
+``` bash
+else if (opsi == "b") {
+    for (nama_gerbong in carriage) {
+        printf "- %s\n", nama_gerbong
+}
+    printf "Jumlah gerbong penumpang KANJ adalah %d", length(carriage)
+}
+```
+<img width="319" height="125" alt="Screenshot 2026-03-20 174008" src="https://github.com/user-attachments/assets/7873a856-10c8-458e-bd58-7b4b90283cfe" />
+
+
+
