@@ -168,4 +168,20 @@ Cek tree:
 
 ## Soal_2
 
-### 1. 
+### 1. Install gdown dan download file pdf
+
+Untuk menginstall tool gdown menggunakan command:
+``` bash
+sudo apt update
+sudo apt install pipx
+pipx ensurepath
+```
+
+Untuk mendownload file pdf menggunakan command:
+``` bash
+gdown --id 1q10pHSC3KFfvEiCN3V6PTroPR7YGHF6Q -O peta-ekspedisi-amba.pdf
+```
+Navigasi file:
+
+
+
