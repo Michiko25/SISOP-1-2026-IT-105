@@ -183,5 +183,13 @@ gdown --id 1q10pHSC3KFfvEiCN3V6PTroPR7YGHF6Q -O peta-ekspedisi-amba.pdf
 ```
 Navigasi file:
 
+<img width="486" height="102" alt="Screenshot 2026-03-23 215137" src="https://github.com/user-attachments/assets/bd0380a5-bbb7-4f00-b52f-ca5d07c51a64" />
+
+### 2. Mencari file dalam file peta-ekspedisi-amba.pdf
+
+Membuka file peta-ekspedisi-amba.pdf secara concatenate, menggunakan command cat dan di akhir isi file terdapat link git
+
+
+
 
 
