@@ -189,7 +189,10 @@ Navigasi file:
 
 Membuka file peta-ekspedisi-amba.pdf secara concatenate, menggunakan command cat dan di akhir isi file terdapat link git
 
+<img width="909" height="223" alt="Screenshot 2026-03-24 211616" src="https://github.com/user-attachments/assets/509492f8-fd0f-49e6-967a-e23794b93bdf" />
 
+Command git clone untuk download (salin) link yang telah ditemukan
 
+<img width="506" height="235" alt="Screenshot 2026-03-24 212214" src="https://github.com/user-attachments/assets/944262b2-cfe5-4083-86ae-67ce79509b1d" />
 
 
