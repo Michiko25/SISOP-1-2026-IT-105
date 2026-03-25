@@ -219,3 +219,9 @@ Membuat program melalui file nemupusaka.sh untuk menghitung titik tengah dengan 
 Hasil output dalam file baru (posisipusaka.txt)
 
 <img width="493" height="143" alt="Screenshot 2026-03-25 121410" src="https://github.com/user-attachments/assets/cc1298c0-c2c3-4eb4-95fe-f1d4d24ef5f9" />
+
+Cek tree:
+
+<img width="509" height="222" alt="Screenshot 2026-03-25 125345" src="https://github.com/user-attachments/assets/98382148-fd9f-4c12-95a2-894a518128d6" />
+
+## Soal_3
