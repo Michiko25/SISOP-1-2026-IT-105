@@ -1,6 +1,6 @@
 # SISOP-1-2026-IT-105
 
-## Soal 1
+## Soal_1
 ### 1. Download file passenger.csv
 
 <img width="500" height="362" alt="Screenshot 2026-03-18 143011" src="https://github.com/user-attachments/assets/8dfc37a8-5f2b-41e7-af3e-43d857c32895" />
@@ -81,6 +81,7 @@ else if (opsi == "b") {
     printf "Jumlah gerbong penumpang KANJ adalah %d", length(carriage)
 }
 ```
+
 <img width="319" height="125" alt="Screenshot 2026-03-20 174008" src="https://github.com/user-attachments/assets/7873a856-10c8-458e-bd58-7b4b90283cfe" />
 
 Pada hasil output terlihat bahwa Gerbong3 terbaca dua kali. Hal ini terjadi karena sistem membaca tiap gerbong dengan akhiran \r kecuali pada baris akhir (Gerbong3). Maka solusi untuk permasalahan tersebut, saya menambahkan kode:
@@ -90,12 +91,10 @@ gsub (/\r/, "", $0)
 ```
 
 Sehingga hasil output opsi b menjadi:
-<img width="615" height="180" alt="Screenshot 2026-03-20 161517" src="https://github.com/user-attachments/assets/8dda9fab-2b3a-4590-b407-1ea3a9d6155e" />
-
-
-
+<img width="307" height="90" alt="Screenshot 2026-03-20 161517" src="https://github.com/user-attachments/assets/8dda9fab-2b3a-4590-b407-1ea3a9d6155e" />
 
 ### 4. Hasil akhir
+
 Hasil akhir untuk program KANJ.sh menjadi:
 
 ``` bash
@@ -157,8 +156,16 @@ END {
     }
 }
 ```
+
 Hasil akhir untuk output menjadi:
-<img width="972" height="501" alt="Screenshot 2026-03-20 161431" src="https://github.com/user-attachments/assets/443b6618-6846-451b-a43f-de3911f46c74" />
+
+<img width="450" height="280" alt="Screenshot 2026-03-25 180848" src="https://github.com/user-attachments/assets/ee0f7e86-52b1-4b81-bd51-438745f70c62" />
+
+Cek tree:
+
+<img width="288" height="110" alt="image" src="https://github.com/user-attachments/assets/006359c2-a2fa-4fcb-bd44-bc3f736cd60f" />
 
 
+## Soal_2
 
+### 1. 
