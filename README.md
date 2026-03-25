@@ -91,6 +91,7 @@ gsub (/\r/, "", $0)
 ```
 
 Sehingga hasil output opsi b menjadi:
+
 <img width="307" height="90" alt="Screenshot 2026-03-20 161517" src="https://github.com/user-attachments/assets/8dda9fab-2b3a-4590-b407-1ea3a9d6155e" />
 
 ### 4. Hasil akhir
@@ -207,3 +208,14 @@ Mengambil tiga data (id_site, latitude, longitude) dari gsxtrack.json yang didap
 Hasil output dalam file baru (titik-penting.txt)
 
 <img width="462" height="113" alt="Screenshot 2026-03-24 225207" src="https://github.com/user-attachments/assets/33e0a759-51f0-4c88-92e4-b5262ba42039" />
+
+### 4. Menghitung titik tengah diagonal koordinat
+Membuat program melalui file nemupusaka.sh untuk menghitung titik tengah dengan rumus yang telah diberikan di soal lalu hasil outputnya diletakkan pada file baru (posisipusaka.txt)
+
+``` bash
+# put ur nemupusaka.sh code here y
+```
+
+Hasil output dalam file baru (posisipusaka.txt)
+
+<img width="493" height="143" alt="Screenshot 2026-03-25 121410" src="https://github.com/user-attachments/assets/cc1298c0-c2c3-4eb4-95fe-f1d4d24ef5f9" />
