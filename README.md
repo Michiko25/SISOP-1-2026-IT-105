@@ -189,10 +189,21 @@ Navigasi file:
 
 Membuka file peta-ekspedisi-amba.pdf secara concatenate, menggunakan command cat dan di akhir isi file terdapat link git
 
-<img width="909" height="223" alt="Screenshot 2026-03-24 211616" src="https://github.com/user-attachments/assets/509492f8-fd0f-49e6-967a-e23794b93bdf" />
+<img width="611" height="142" alt="Screenshot 2026-03-24 211616" src="https://github.com/user-attachments/assets/3139c735-9775-4aed-8a3d-93446f4c5c77" />
 
-Command git clone untuk download (salin) link yang telah ditemukan
+
+Command git clone untuk download link yang telah ditemukan
 
 <img width="506" height="235" alt="Screenshot 2026-03-24 212214" src="https://github.com/user-attachments/assets/944262b2-cfe5-4083-86ae-67ce79509b1d" />
 
+### 3. Shell script parserkoordinat.sh
 
+Mengambil tiga data (id_site, latitude, longitude) dari gsxtrack.json yang didapat melalui repo git sebelumnya dan memindahkan hasil tersebut ke file baru bernama titik-penting.txt
+
+``` bash
+# put your parserkoordinat.sh code here dude dont forgeddddd
+```
+
+Hasil output dalam file baru (titik-penting.txt)
+
+<img width="462" height="113" alt="Screenshot 2026-03-24 225207" src="https://github.com/user-attachments/assets/33e0a759-51f0-4c88-92e4-b5262ba42039" />
