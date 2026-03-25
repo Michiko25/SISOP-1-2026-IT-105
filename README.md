@@ -2,10 +2,12 @@
 
 ## Soal 1
 ### 1. Download file passenger.csv
+
 <img width="500" height="362" alt="Screenshot 2026-03-18 143011" src="https://github.com/user-attachments/assets/8dfc37a8-5f2b-41e7-af3e-43d857c32895" />
 
 
 ### 2. Membuat program sesuai soal
+
 ```bash
 BEGIN {
     FS = ","
@@ -66,9 +68,11 @@ END {
 
 ### 3. Analisis hasil
 Mencoba hasil output:
+
 <img width="486" height="250" alt="Screenshot 2026-03-20 161431" src="https://github.com/user-attachments/assets/0296989a-c112-4e90-822b-78db8f5f39bb" />
 
 Setelah dicoba hasil outputnya, ternyata pada opsi b menunjukkan bahwa total gerbongnya ada 5. Untuk itu, saya membuat program untuk melihat apa saja isi gerbongnya.
+
 ``` bash
 else if (opsi == "b") {
     for (nama_gerbong in carriage) {
@@ -80,15 +84,20 @@ else if (opsi == "b") {
 <img width="319" height="125" alt="Screenshot 2026-03-20 174008" src="https://github.com/user-attachments/assets/7873a856-10c8-458e-bd58-7b4b90283cfe" />
 
 Pada hasil output terlihat bahwa Gerbong3 terbaca dua kali. Hal ini terjadi karena sistem membaca tiap gerbong dengan akhiran \r kecuali pada baris akhir (Gerbong3). Maka solusi untuk permasalahan tersebut, saya menambahkan kode:
+
 ``` bash
 gsub (/\r/, "", $0)
 ```
+
 Sehingga hasil output opsi b menjadi:
+<img width="615" height="180" alt="Screenshot 2026-03-20 161517" src="https://github.com/user-attachments/assets/8dda9fab-2b3a-4590-b407-1ea3a9d6155e" />
+
 
 
 
 ### 4. Hasil akhir
 Hasil akhir untuk program KANJ.sh menjadi:
+
 ``` bash
 BEGIN {
     FS = ","
@@ -111,7 +120,7 @@ NR > 1 {
         name = $1
     }
     
-    # opsi d
+    # opsi da
     sum += $2
     
     # opsi e
@@ -149,8 +158,7 @@ END {
 }
 ```
 Hasil akhir untuk output menjadi:
-
-
+<img width="972" height="501" alt="Screenshot 2026-03-20 161431" src="https://github.com/user-attachments/assets/443b6618-6846-451b-a43f-de3911f46c74" />
 
 
 
