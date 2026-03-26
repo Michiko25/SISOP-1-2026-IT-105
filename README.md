@@ -299,8 +299,129 @@ Cek tree:
 
 <img width="509" height="222" alt="Screenshot 2026-03-25 125345" src="https://github.com/user-attachments/assets/98382148-fd9f-4c12-95a2-894a518128d6" />
 
-### Kendala
+### 5. Kendala
 
-Folder venv sebelumnya berada dalam tree soal_2, maka dari itu saya remove folder tersebut untuk menjaga tree sesuai ketentuan soal, kemudian menginstall ulang dan meletakkan folder tersebut di user agar tools tersebut dapat digunakan secara global. 
+Folder venv sebelumnya berada dalam tree soal_2, maka dari itu saya menginstall ulang dan meletakkan folder tersebut di user agar tools tersebut dapat digunakan secara global, kemudian remove folder tersebut untuk menjaga tree sesuai ketentuan soal. 
 
 ## Soal_3
+
+### 1. Menyiapkan Struktur Folder
+Membuat variabel untuk setiap file dalam file kost_slebew.sh
+```bash
+Data="data/penghuni.csv"
+
+Log="log/tagihan.log"
+
+Rekap="rekap/laporan_bulanan.txt"
+
+Sampah="sampah/history_hapus.csv"
+```
+Bertujuan agar jika folder atau nama file berubah, cukup ganti bagian tersebut. 
+
+### 2. Looping option
+``` bash
+show banner() {
+clear
+echo "=================================================="
+echo "      K O S T   S L E B E W   A M B A T U K A M   "
+echo "=================================================="
+}
+
+# Looping pilihan
+while true; do
+show_banner
+echo " ID | OPTION"
+echo "--------------------------------------------------"
+echo " 1 | Tambah Penghuni Baru"
+echo " 2 | Hapus Penghuni"
+echo " 3 | Tampilkan Daftar Penghuni"
+echo " 4 | Update Status Penghuni"
+echo " 5 | Cetak Laporan Keuangan"
+echo " 6 | Kelola Corn (Pengingat tahigan)"
+echo " 7 | Exit Program"
+echo "--------------------------------------------------"
+read -p "Enter option (1-7): " option
+```
+
+Menggunakan looping while true untuk menciptakan antarmuka interaktif. 
+Fungsi show_banner agar visual rapi dengan membersihkan layar (clean) setiap kali menu dipanggil. 
+
+```bash
+# opsi 1 (tambah penghuni, simpan data ke csv
+tambah_penghuni() {
+show_banner
+echo "       TAMBAH PENGHUNI    "
+echo "=============================="
+
+read -p "Masukkan nama: " nama
+
+read -p "Masukkan kamar: " kamar
+# nomor kamar harus unik
+if [[ -f "$Data"]] && grep -q ",$kamar," "$Data"; then
+echo -e "[X] Kamar $kamar sudah terisi!"
+read -p "Tekan ENTER untuk kembali ke menu"
+return
+fi
+
+read -p "Masukkan harga sewa: " harga_sewa
+# harga sewa harus (+)
+if [[ ! "$harga_sewa" =~ ^[0-9]+$ ]] || [ "$harga_sewa" -le 0]; then
+echo -e "[X] Angka harga sewa harus bernilai positif!"
+read -p "Tekan ENTER untuk kembali ke menu"
+return
+fi
+
+read -p "Masukkan tanggal masuk (YYYY-MM-DD): " tanggal
+# pastiin format tangal sesuai dan tidak lebih dari hari ini
+if [[ !  "$tanggal" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]]; then
+echo -e "[X] Format tanggal harus sesuai (YYYY-MM-DD)!"
+read -p "Tekan ENTER untuk kembali ke menu"
+return
+fi
+today+$(date +%Y%m%d)
+input_date=$(echo "$tanggal" | tr -d '-')
+if [ $"$input_date" -gt "$today"]; then
+echo -e "[X] Tanggal tidak boleh lebih dari tanggal hari ini!"
+read -p "Tekan ENTER untuk kembali ke menu"
+return
+fi
+
+readi -p "Masukkan status awal (Aktif/Menunggak): " status
+# pastiin status sesuai (A/M)
+if [[ ! "$status" =~ ^(Aktif|Menunggak)$ ]]; then
+echo -e "[X] Status harus "Aktif" atau "Menunggak"! "
+read -p "Tekan ENTER untuk kembali ke menu"
+return
+fi
+
+# simpan input ke database csv
+echo "$nama,$kamar,$harga_sewa,$tanggal,$status" >> "$Data"
+echo -e "[V] Penghuni \"$nama\" berhasil ditambahkan ke Kamar $kamar dengan status $status."
+read -p "Tekan [ENTER] untuk kembali ke menu..."
+}
+```
+
+Logika untuk opsi 1:
+Menggunakan ```grep -q``` untuk memeriksa jika nomor kamar sudah ada di $Data untuk mencegah adanya nomor kamar yang sama. 
+Harga sewa menggunakan regex ```^[0-9]+$``` untuk memastikan input harga berupa angka murni dan ```-le 0``` memastikan nilainya tidak negatif. 
+Untuk mengecek jika tanggal melebihi tanggal hari ini, tanggal diubah menjadi angka murni dengan menghapus tanda (-) dari YYYY-MM-DD dan membandingkan tanggal input dengan tanggal hari ini.
+Data yang telah divalidasi akan disimpan ke file penghuni.csv (```>>```) dengan format Nama, Kamar, Harga_Sewa, Tanggal, dan Status. 
+
+```bash
+case $option in
+1) tambah penghuni ;;
+2)
+```
+
+Case statement untuk mengarahkan pengguna ke fungsi sesuai input (1-7).
+
+### 3. Kendala
+Pengerjaan soal ini masih belum selesai, sehingga dalam case option masih tersedia logika opsi ke 1.
+Ada beberapa penulisan kode yang salah ketik (typo) seperti ```today+$(date...)``` seharusnya menggunakan tanda = bukan +. 
+
+Cek tree:
+
+<img width="275" height="149" alt="image" src="https://github.com/user-attachments/assets/00e8cefa-74e9-4ef3-9924-6e20b0774e0d" />
+
+Jika cek tree, masih banyak file-file yang belum terbentuk karena pengerjaan soal_3 belum selesai. 
+
