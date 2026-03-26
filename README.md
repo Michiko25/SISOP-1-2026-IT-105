@@ -72,10 +72,15 @@ Rule BEGIN dijalankan sekali sebelum awk membaca isi file. ```FS = ","``` meneta
 Built NR > 1 dijalankan untuk setiap baris dalam file kecuali baris pertama (judul kolom). 
 
 Rule END juga dijalankan sekali setelah seluruh file dibaca. Skrip tiap opsi (a-e) di awal dicek menggunakan percabangan if-else. 
+
 Opsi a: Setelah dihitung satu persatu menggunakan ```count_passenger++``` kemudian ditampilkan total penumpangnya.
+
 Opsi b: Dari ```carriage[$4]++``` (associative array) jika nama gerbong baru muncul, awk akan menambahkannya ke array. Kemudian ditampilkan jumlah gerbongnya menggunakan fungsi ```lenghr(carriage)``` yang menghitung berapa banyak gerbong yang array carriage isi.
+
 Opsi c: Dengan logika ```if ($2 > oldest)```, mencari nilai maksimum pada kolom usia dan simpan usianya serta namanya. 
+
 Opsi d: Menghitung rata-rata usia dan menggunakan ```%.0f``` untuk pembulatan. 
+
 Else: Logika ini dibuat jika pengisian input tidak sesuai format.
 
 ### 3. Analisis hasil
@@ -215,8 +220,41 @@ Command git clone untuk download link yang telah ditemukan
 Mengambil tiga data (id_site, latitude, longitude) dari gsxtrack.json yang didapat melalui repo git sebelumnya dan memindahkan hasil tersebut ke file baru bernama titik-penting.txt
 
 ``` bash
-# put your parserkoordinat.sh code here dude dont forgeddddd
+#!/bin/bash
+
+input="gsxtrack.json"
+output="titik-penting.txt"
+
+awk -F'"' '
+/"id":/ {id = $4}
+/"site_name":/ {name = $4}
+/"latitude":/ {
+lat = ($4 != "" ? $4 : $3); gsub(/[[:space:]:,]/, "", lat)
+}
+/"longitude":/{
+lon = ($4 != "" ? $4 : $3); gsub(/[[:space:]:,]/, "", lon)
+if (id != "") print id "," name "," lat "," lon ","
+}
+' "$input" | sort > "$output"
 ```
+
+Logika: 
+``` bash
+input="gsxtrack.json"
+output="titik-penting.txt"
+```
+Data parser yang menggunakan awk untuk mengambil informasi spesifik dari file json dan mengubahnya menjadi format csv yang rapi.
+```-F'"'``` sebagai parameter pembatas antar kolom dengan tanda ".
+```/"id":/ {id = $4}``` jika pada file json mengandung teks "id", simpan isi kolom ke-4 ke dalam variabel id. Contoh dalam file json tersebut:
+"id": "node_001",
+Artinya isi kolom ke-4 (node_001) yang disimpan.
+
+```lat = ($4 != "" ? $4 : $3);```
+Logika tersebut berfungsi sebagai pengaman bila kolom ke 4 kosong maka isi kolom ke 3 yang disimpan.
+```gsub(/[[:space:]:,]/, "", lat)```
+Penggunaan gsub di sini berfungsi untuk menghapus semua karakter yang tidak diperlukan seperti spasi (```:space:]```), titik dua (```:```), dan koma (```,```) agar variabel ```lat``` hanya berisi angka murni.
+
+Hasil akhir awk dipindah ke perintah ```sort``` agar urutan node berurutan sebelum disimpan ke file output. 
 
 Hasil output dalam file baru (titik-penting.txt)
 
@@ -226,8 +264,32 @@ Hasil output dalam file baru (titik-penting.txt)
 Membuat program melalui file nemupusaka.sh untuk menghitung titik tengah dengan rumus yang telah diberikan di soal lalu hasil outputnya diletakkan pada file baru (posisipusaka.txt)
 
 ``` bash
-# put ur nemupusaka.sh code here y
+#!/bin/bash
+
+input="titik-penting.txt"
+output="posisipusaka.txt"
+
+awk -F',' '
+NR == 1 {lat1=$3; lon1=$4}
+NR == 3 {lat2=$3; lon2=$4}
+
+END {
+mid_lat = (lat1 + lat2) / 2
+mid_lon = (lon1 + lon2) / 2
+
+print "Koordinat pusat: "
+printf "%.6f, %.6f", mid_lat, mid_lon
+
+# simpan output ke file lain
+printf "%.6f, %.6f", mid_lat, mid_lon > "posisipusaka.txt"
+}
+' "$input"
 ```
+
+Jika dilihat dari angka koordinat dari file ```titik-penting.txt```, maka ```NR == 1``` sebagai node_001 dan ```NR == 3``` sebagai node_003 dapat digunakan untuk menghitung diagonal persegi karena tidak ada nilai latitide ($3) dan longitude ($4) yang sama. 
+
+Rule END menandakan bahwa logika matematika titik tengah hanya bisa dilakukan setelah awk membaca seluruh file dan mendapatkan nilai yang dibutuhkan untuk mengitung titik tengah. 
+```%.6f``` memastikan agar program menampilkan 6 angka di belakang koma sebagai angka koordinat. 
 
 Hasil output dalam file baru (posisipusaka.txt)
 
@@ -236,5 +298,9 @@ Hasil output dalam file baru (posisipusaka.txt)
 Cek tree:
 
 <img width="509" height="222" alt="Screenshot 2026-03-25 125345" src="https://github.com/user-attachments/assets/98382148-fd9f-4c12-95a2-894a518128d6" />
+
+### Kendala
+
+Folder venv sebelumnya berada dalam tree soal_2, maka dari itu saya remove folder tersebut untuk menjaga tree sesuai ketentuan soal, kemudian menginstall ulang dan meletakkan folder tersebut di user agar tools tersebut dapat digunakan secara global. 
 
 ## Soal_3
