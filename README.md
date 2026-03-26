@@ -66,6 +66,15 @@ END {
 }
 ```
 
+Program tersebut menggunakan metode awk untuk mengolah data. 
+Rule BEGIN dijalankan sekali sebelum awk membaca isi file. ```FS = ","``` menetapkan Field Separator menjadi koma, memberi tanda bahwa tiap data dipisah oleh koma sesuai format csv. 
+```opsi = ARGV[2]``` mengambil argumen kedua (dihitung mulai nol) dari input "awk -f file.sh data.csv a". ```delete ARGV[2]```, argumen tersebut dihapus dari daftar file agar awk tidak menganggap argumen tersebut sebagai nama file yang harus dibuka. 
+Built NR > 1 dijalankan untuk setiap baris dalam file kecuali baris pertama (judul kolom). 
+
+Rule END juga dijalankan sekali setelah seluruh file dibaca. Skrip tiap opsi (a-e) di awal dicek menggunakan percabangan if-else. 
+a. Setelah dihitung satu persatu menggunakan ```count_passenger++``` kemudian ditampilkan total penumpangnya. 
+b. 
+
 ### 3. Analisis hasil
 Mencoba hasil output:
 
