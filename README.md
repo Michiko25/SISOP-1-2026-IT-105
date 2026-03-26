@@ -72,8 +72,11 @@ Rule BEGIN dijalankan sekali sebelum awk membaca isi file. ```FS = ","``` meneta
 Built NR > 1 dijalankan untuk setiap baris dalam file kecuali baris pertama (judul kolom). 
 
 Rule END juga dijalankan sekali setelah seluruh file dibaca. Skrip tiap opsi (a-e) di awal dicek menggunakan percabangan if-else. 
-a. Setelah dihitung satu persatu menggunakan ```count_passenger++``` kemudian ditampilkan total penumpangnya. 
-b. 
+Opsi a: Setelah dihitung satu persatu menggunakan ```count_passenger++``` kemudian ditampilkan total penumpangnya.
+Opsi b: Dari ```carriage[$4]++``` (associative array) jika nama gerbong baru muncul, awk akan menambahkannya ke array. Kemudian ditampilkan jumlah gerbongnya menggunakan fungsi ```lenghr(carriage)``` yang menghitung berapa banyak gerbong yang array carriage isi.
+Opsi c: Dengan logika ```if ($2 > oldest)```, mencari nilai maksimum pada kolom usia dan simpan usianya serta namanya. 
+Opsi d: Menghitung rata-rata usia dan menggunakan ```%.0f``` untuk pembulatan. 
+Else: Logika ini dibuat jika pengisian input tidak sesuai format.
 
 ### 3. Analisis hasil
 Mencoba hasil output:
@@ -98,6 +101,7 @@ Pada hasil output terlihat bahwa Gerbong3 terbaca dua kali. Hal ini terjadi kare
 ``` bash
 gsub (/\r/, "", $0)
 ```
+Penggunaan gsub (global substitution) sebagai fungsi bawaan awk untuk mencari dan mengganti teks. Mengganti semua kemunculan pola ```/\r/``` (carriage return tersembunyi), ```""``` untuk menghapus, dan ```$0``` sebagai target data yang harus dibaca awk (semua baris).
 
 Sehingga hasil output opsi b menjadi:
 
