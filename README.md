@@ -425,3 +425,15 @@ Cek tree:
 
 Jika cek tree, masih banyak file-file yang belum terbentuk karena pengerjaan soal_3 belum selesai. 
 
+## Revisi Pengerjaan	
+	
+### Soal_1	
+Hasil output rata-rata usia dibulatkan ke bawah sehingga hasilnya bukan 38 namun 37, sehingga code ```%.0f``` diubah ```%d```	
+Hasil output revisi menjadi:	
+	
+<img width="298" height="60" alt="image" src="https://github.com/user-attachments/assets/b6f0c8ca-ddc8-4add-86e2-961f475cf445" />	
+	
+### Soal_3	
+((melanjutkan pengerjaan soal nomor 3))
+
+
