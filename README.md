@@ -632,7 +632,7 @@ Hasil output pada opsi 2 jika nama yang ingin dihapus ada di data:
 
 Hasil output opsi 3:
 
-<img width="379" height="166" alt="image" src="https://github.com/user-attachments/assets/aa890478-4c3a-4cfa-a300-ed3a98380aae" />
+<img width="382" height="165" alt="image" src="https://github.com/user-attachments/assets/2723755b-2c7a-42b4-8e60-a5db88b49857" />
 
 Hasil output opsi 4 jika nama yang ingin di-update ada di data:
 
@@ -640,5 +640,20 @@ Hasil output opsi 4 jika nama yang ingin di-update ada di data:
 
 <img width="378" height="163" alt="image" src="https://github.com/user-attachments/assets/5db3cfce-0e90-4095-8cd5-3c1c4731a6cd" />
 
+Hasil output opsi 5:
+
+<img width="296" height="127" alt="image" src="https://github.com/user-attachments/assets/c86107f2-bef1-4040-8139-84ebcd20ff93" />
+
+Hasil output opsi 6: 
+
+<img width="304" height="115" alt="image" src="https://github.com/user-attachments/assets/c42f6196-be40-4ae0-aed8-a3528439397a" />
+
+<img width="337" height="92" alt="image" src="https://github.com/user-attachments/assets/407fd41e-a2ac-492f-8c9a-c6b86cf34f0a" />
+
+Hasil output cek_tagihan:
+
+Command ```./kost_slebew.sh --check-tagihan```,
+
+<img width="390" height="93" alt="image" src="https://github.com/user-attachments/assets/3b82315c-909f-42e3-92fc-68c31aa7eb8d" />
 
 #### 12. Kendala
