@@ -662,7 +662,12 @@ Command ```./kost_slebew.sh --check-tagihan```,
 
 <img width="390" height="93" alt="image" src="https://github.com/user-attachments/assets/3b82315c-909f-42e3-92fc-68c31aa7eb8d" />
 
-#### 12. Kendala
+#### 12. Cek tree
+
+<img width="271" height="186" alt="image" src="https://github.com/user-attachments/assets/637f25c9-0891-495c-a471-27c26c5e0ed9" />
+
+
+#### 13. Kendala
 Sebelumnya, saya menuliskan logika cek_tagihan di dalam while loop. Hal ini membuat perintah tidak bisa dieksekusi (unreachable code) karena untuk menjalankan logika tersebut tidak input angka, logika tersebut tidak terbaca komputer karena tertahan dalam looping menu. 
 
 Mayoritas kendala pada salah penulisan syntax dan typo. Masalah tersebut telah saya perbaiki agar program dapat berjalan. Berikut salah satu dokumentasi kesalahan penulisannya: 
