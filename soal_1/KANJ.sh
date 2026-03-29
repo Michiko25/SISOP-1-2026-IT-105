@@ -43,7 +43,7 @@ printf "%s adalah penumpang kereta tertua dengan usia %d", name, oldest
 }
 
 else if (opsi == "d") {
-printf "Rata-rata usia penumpang adalah %.0f tahun", sum/count_passenger
+printf "Rata-rata usia penumpang adalah %d tahun", sum/count_passenger
 }
 
 else if (opsi == "e") {
