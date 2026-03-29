@@ -303,128 +303,6 @@ Cek tree:
 
 Folder venv sebelumnya berada dalam tree soal_2, maka dari itu saya menginstall ulang dan meletakkan folder tersebut di user agar tools tersebut dapat digunakan secara global, kemudian remove folder tersebut untuk menjaga tree sesuai ketentuan soal. 
 
-## Soal_3
-
-### 1. Menyiapkan Struktur Folder
-Membuat variabel untuk setiap file dalam file kost_slebew.sh
-```bash
-Data="data/penghuni.csv"
-
-Log="log/tagihan.log"
-
-Rekap="rekap/laporan_bulanan.txt"
-
-Sampah="sampah/history_hapus.csv"
-```
-Bertujuan agar jika folder atau nama file berubah, cukup ganti bagian tersebut. 
-
-### 2. Looping option
-``` bash
-show banner() {
-clear
-echo "=================================================="
-echo "      K O S T   S L E B E W   A M B A T U K A M   "
-echo "=================================================="
-}
-
-# Looping pilihan
-while true; do
-show_banner
-echo " ID | OPTION"
-echo "--------------------------------------------------"
-echo " 1 | Tambah Penghuni Baru"
-echo " 2 | Hapus Penghuni"
-echo " 3 | Tampilkan Daftar Penghuni"
-echo " 4 | Update Status Penghuni"
-echo " 5 | Cetak Laporan Keuangan"
-echo " 6 | Kelola Corn (Pengingat tahigan)"
-echo " 7 | Exit Program"
-echo "--------------------------------------------------"
-read -p "Enter option (1-7): " option
-```
-
-Menggunakan looping while true untuk menciptakan antarmuka interaktif. 
-Fungsi show_banner agar visual rapi dengan membersihkan layar (clean) setiap kali menu dipanggil. 
-
-```bash
-# opsi 1 (tambah penghuni, simpan data ke csv
-tambah_penghuni() {
-show_banner
-echo "       TAMBAH PENGHUNI    "
-echo "=============================="
-
-read -p "Masukkan nama: " nama
-
-read -p "Masukkan kamar: " kamar
-# nomor kamar harus unik
-if [[ -f "$Data"]] && grep -q ",$kamar," "$Data"; then
-echo -e "[X] Kamar $kamar sudah terisi!"
-read -p "Tekan ENTER untuk kembali ke menu"
-return
-fi
-
-read -p "Masukkan harga sewa: " harga_sewa
-# harga sewa harus (+)
-if [[ ! "$harga_sewa" =~ ^[0-9]+$ ]] || [ "$harga_sewa" -le 0]; then
-echo -e "[X] Angka harga sewa harus bernilai positif!"
-read -p "Tekan ENTER untuk kembali ke menu"
-return
-fi
-
-read -p "Masukkan tanggal masuk (YYYY-MM-DD): " tanggal
-# pastiin format tangal sesuai dan tidak lebih dari hari ini
-if [[ !  "$tanggal" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]]; then
-echo -e "[X] Format tanggal harus sesuai (YYYY-MM-DD)!"
-read -p "Tekan ENTER untuk kembali ke menu"
-return
-fi
-today+$(date +%Y%m%d)
-input_date=$(echo "$tanggal" | tr -d '-')
-if [ $"$input_date" -gt "$today"]; then
-echo -e "[X] Tanggal tidak boleh lebih dari tanggal hari ini!"
-read -p "Tekan ENTER untuk kembali ke menu"
-return
-fi
-
-readi -p "Masukkan status awal (Aktif/Menunggak): " status
-# pastiin status sesuai (A/M)
-if [[ ! "$status" =~ ^(Aktif|Menunggak)$ ]]; then
-echo -e "[X] Status harus "Aktif" atau "Menunggak"! "
-read -p "Tekan ENTER untuk kembali ke menu"
-return
-fi
-
-# simpan input ke database csv
-echo "$nama,$kamar,$harga_sewa,$tanggal,$status" >> "$Data"
-echo -e "[V] Penghuni \"$nama\" berhasil ditambahkan ke Kamar $kamar dengan status $status."
-read -p "Tekan [ENTER] untuk kembali ke menu..."
-}
-```
-
-Logika untuk opsi 1:
-Menggunakan ```grep -q``` untuk memeriksa jika nomor kamar sudah ada di $Data untuk mencegah adanya nomor kamar yang sama. 
-Harga sewa menggunakan regex ```^[0-9]+$``` untuk memastikan input harga berupa angka murni dan ```-le 0``` memastikan nilainya tidak negatif. 
-Untuk mengecek jika tanggal melebihi tanggal hari ini, tanggal diubah menjadi angka murni dengan menghapus tanda (-) dari YYYY-MM-DD dan membandingkan tanggal input dengan tanggal hari ini.
-Data yang telah divalidasi akan disimpan ke file penghuni.csv (```>>```) dengan format Nama, Kamar, Harga_Sewa, Tanggal, dan Status. 
-
-```bash
-case $option in
-1) tambah penghuni ;;
-2)
-```
-
-Case statement untuk mengarahkan pengguna ke fungsi sesuai input (1-7).
-
-### 3. Kendala
-Pengerjaan soal ini masih belum selesai, sehingga dalam case option masih tersedia logika opsi ke 1.
-Ada beberapa penulisan kode yang salah ketik (typo) seperti ```today+$(date...)``` seharusnya menggunakan tanda = bukan +. 
-
-Cek tree:
-
-<img width="275" height="149" alt="image" src="https://github.com/user-attachments/assets/00e8cefa-74e9-4ef3-9924-6e20b0774e0d" />
-
-Jika cek tree, masih banyak file-file yang belum terbentuk karena pengerjaan soal_3 belum selesai. 
-
 ## Revisi Pengerjaan	
 	
 ### Soal_1	
@@ -434,6 +312,162 @@ Hasil output revisi menjadi:
 <img width="298" height="60" alt="image" src="https://github.com/user-attachments/assets/b6f0c8ca-ddc8-4add-86e2-961f475cf445" />	
 	
 ### Soal_3	
-((melanjutkan pengerjaan soal nomor 3))
+
+#### 1. Konfigurasi Path
+Mendefinisikan variabel global untuk lokasi file Data,Log, Rekap, dan Sampah untuk memudahkan pemeliharaan kode, jika folder datase berubah, cukup ganti di satu tempat. 
+
+```bash
+#!/bin/bash
+
+Data="data/penghuni.csv"
+Log="log/tagihan.log"
+Rekap="rekap/laporan_bulanan.txt"
+Sampah="sampah/history_hapus.csv"
+```
+
+#### 2. Cek Tagihan 
+
+```bash
+# Cek tagihan
+if [[ "$1" == "--cek_tagihan" ]]; then
+	timestamp=$(date "+%Y-%m-%d %H:%M:%S")
+awk -F, -v t="$timestamp" '$5=="Menunggak" {
+	printf "[%s] Tagihan: %s (Kamar %s) menunggak sewa Rp%s\n", t, $1, $2, $3
+}' "$Data" >> "$Log"
+exit 0
+fi
+```
+
+Jika skrip dijalankan dengan kode ```--cek_tagihan```, sistem tidak menampilkan menu tetapi menggunakan awk untuk menyaring penghuni yang statusnya "Menunggak" dan mencatatnya ke file log beserta timestamp. Bagian ini dibuat khusus agar bisa dipanggil secara otomatis oleh cron job.
+
+#### 3. Fungsi Show Banner
+
+```bash
+show_banner() {
+clear
+echo "=================================================="
+echo "      K O S T   S L E B E W   A M B A T U K A M   "
+echo "=================================================="
+}
+```
+
+#### 4. Opsi 1: Tambah Penghuni
+
+```bash
+# opsi 1 (tambah penghuni, simpan data ke csv)
+tambah_penghuni() {
+show_banner
+echo "       TAMBAH PENGHUNI    "
+echo "=============================="
+
+read -p "Masukkan nama: " nama
+read -p "Masukkan kamar: " kamar
+
+# nomor kamar harus unik
+if [[ -f "$Data" ]] && grep -q ",$kamar," "$Data"; then
+	echo -e "[X] Kamar $kamar sudah terisi!"
+	read -p "Tekan ENTER untuk kembali ke menu"
+	return
+fi
+
+read -p "Masukkan harga sewa: " harga_sewa
+# harga sewa harus (+)
+if [[ ! "$harga_sewa" =~ ^[0-9]+$ ]] || [ "$harga_sewa" -le 0 ]; then
+	echo -e "[X] Angka harga sewa harus bernilai positif!"
+	read -p "Tekan ENTER untuk kembali ke menu"
+	return
+fi
+
+read -p "Masukkan tanggal masuk (YYYY-MM-DD): " tanggal
+# pastiin format tangal sesuai dan tidak lebih dari hari ini
+today=$(date +%Y%m%d)
+input_date=$(echo "$tanggal" | tr -d '-')
+if [[ ! "$tanggal" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]] || [ "$input_date" -gt "$today" ]; then
+	echo -e "Tanggal tidak valid!"
+	read -p "Tekan ENTER untuk kembali ke menu"
+	return
+fi
 
 
+read -p "Masukkan status awal (Aktif/Menunggak): " status
+# pastiin status sesuai (A/M)
+if [[ ! "$status" =~ ^(Aktif|Menunggak)$ ]]; then
+	echo -e "[X] Status harus "Aktif" atau "Menunggak"! "
+	read -p "Tekan ENTER untuk kembali ke menu"
+	return
+fi
+
+# simpan input ke database csv
+echo "$nama,$kamar,$harga_sewa,$tanggal,$status" >> "$Data"
+echo -e "[V] Penghuni \"$nama\" berhasil ditambahkan ke Kamar $kamar dengan status $status."
+read -p "Tekan ENTER untuk kembali ke menu..."
+}
+```
+
+```[[ -f "$Data" ]]``` mengecek jika file database sudah ada.
+```grep -q ",$kamar,"``` mencari nomor kamar dalam file csv.
+```if [[ ! "$harga_sewa" =~ ^[0-9]+$ ]] || [ "$harga_sewa" -le 0 ]``` memastikan input hanya berisi angka dan nilai tidak nol atau negatif.
+```tr -d '-'``` menghapus tanda - pada tanggal (misal: 2026-03-29 jadi 20260329) untuk memudahkan logika tanggal yang melebihi tanggal hari ini. Dibandingkan melalui ```-gt "$today"```.
+Jika semua input sesuai ketentuan, data digabungkan dan ditambahkan ke baris paling bawah dari file $Data dan ```>>``` memastikan data lama tidak terhapus. 
+
+#### 5. Opsi 2: Hapus Penghubi
+
+```bash
+# opsi 2 (pindah ke sampah baru dihapus)
+hapus_penghuni() {
+show_banner
+echo "       HAPUS PENGHUNI    "
+echo "=============================="
+
+read -p "Masukkan nama penghuni yang akan dihapus: " nama_hapus
+
+if ! grep -qi "^$nama_hapus," "$Data"; then
+	echo -e "[X] Data \"$nama_hapus\" tidak ditemukan!"
+	read -p "Tekan ENTER untuk kembali ke menu"
+	return
+fi
+
+data_lama=$(grep -i "^$nama_hapus," "$Data")
+echo "$data_lama,$(date +%Y-%m-%d)" >> "$Sampah"
+
+grep -vi "^$nama_hapus," "$Data" > "data/temp_penghuni.csv"
+mv "data/temp_penghuni.csv" "$Data"
+
+echo -e "[V] Data Penghuni \"$nama_hapus\" berhasil dihapus."
+read -p "Tekan ENTER untuk kembali ke menu"
+}
+```
+
+```grep -qi``` mencari nama secara case-insensitive (menganggap huruf kapital dan huruf kecil sama) tanpa menampilkan hasil di layar. 
+Mengambil satu baris utuh data penghuni yang akan hapus dan diletakkan pada variabel ```data_lama```. Kemudian data tersebut dipindah ke file history_hapus.csv.
+```-v``` (invert match) menyuruh grep mengambil semua baris kecuali baris yang berisi nama yang akan dihapus. Memindahkan salinan yang ingin dihapus ke file sementara (temp_penghuni.csv).
+
+#### 6. Opsi 3: Tampilkan Daftar Penghuni
+
+```bash
+# opsi 3 (daftar penghuni)
+tampilkan_daftar(){
+show_banner
+echo "     DAFTAR PENGHUNI KOST    "
+echo "=============================="
+
+if [ ! -s "$Data" ]; then
+echo "Data penghuni masih kosong!"
+read -p "Tekan ENTER untuk kembali ke menu"
+return
+fi
+
+printf "%-5s | %-15s | %-5s | %-15s | %-12s\n" "No" "Nama" "Kamar" "Harga Sewa" "Status"
+echo "------------------------------------------------------------------"
+awk -F, 'BEGIN {a=0; m=0} {
+printf "%-5s | %-15s | %-5s | Rp%-12s | %-12s\n", NR, $1, $2, $3, $5
+if($5=="Aktif") {a++} else {m++}
+}
+
+END {
+print "-----------------------------------------------------------------"
+printf "Total: %d | Aktif %d | Menunggak: %d\n", NR, a, m
+}' "$Data"
+read -p "Tekan ENTER untuk kembali ke menu"
+}
+```
