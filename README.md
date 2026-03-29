@@ -405,12 +405,16 @@ read -p "Tekan ENTER untuk kembali ke menu..."
 ```
 
 ```[[ -f "$Data" ]]``` mengecek jika file database sudah ada.
+
 ```grep -q ",$kamar,"``` mencari nomor kamar dalam file csv.
+
 ```if [[ ! "$harga_sewa" =~ ^[0-9]+$ ]] || [ "$harga_sewa" -le 0 ]``` memastikan input hanya berisi angka dan nilai tidak nol atau negatif.
+
 ```tr -d '-'``` menghapus tanda - pada tanggal (misal: 2026-03-29 jadi 20260329) untuk memudahkan logika tanggal yang melebihi tanggal hari ini. Dibandingkan melalui ```-gt "$today"```.
+
 Jika semua input sesuai ketentuan, data digabungkan dan ditambahkan ke baris paling bawah dari file $Data dan ```>>``` memastikan data lama tidak terhapus. 
 
-#### 5. Opsi 2: Hapus Penghubi
+#### 5. Opsi 2: Hapus Penghuni
 
 ```bash
 # opsi 2 (pindah ke sampah baru dihapus)
@@ -439,7 +443,9 @@ read -p "Tekan ENTER untuk kembali ke menu"
 ```
 
 ```grep -qi``` mencari nama secara case-insensitive (menganggap huruf kapital dan huruf kecil sama) tanpa menampilkan hasil di layar. 
+
 Mengambil satu baris utuh data penghuni yang akan hapus dan diletakkan pada variabel ```data_lama```. Kemudian data tersebut dipindah ke file history_hapus.csv.
+
 ```-v``` (invert match) menyuruh grep mengambil semua baris kecuali baris yang berisi nama yang akan dihapus. Memindahkan salinan yang ingin dihapus ke file sementara (temp_penghuni.csv).
 
 #### 6. Opsi 3: Tampilkan Daftar Penghuni
@@ -471,3 +477,168 @@ printf "Total: %d | Aktif %d | Menunggak: %d\n", NR, a, m
 read -p "Tekan ENTER untuk kembali ke menu"
 }
 ```
+
+Operator ```-s``` untuk mengecek apakah file ada dan memiliki isi.
+
+```BEGIN {a=0; m=0}``` dijalankan satu kali di awal sebelum membaca data, menginisialisasi variabel penghitung jumlah aktif dan menunggak.
+
+```NR, $1, $2, $3, $5``` NR untuk mencetak nomor urut baris. $1, $2, $3, $5 untuk mengambil data nama, kamar, harga, dan status dari file csv.
+
+#### 7. Opsi 4: Update Status
+
+```bash
+# opsi 4 (update status a/m)
+update_status(){
+show_banner
+echo "        UPDATE STATUS    "
+echo "=============================="
+read -p "Masukkan nama penghuni: " update_nama
+
+if ! grep -qi "^$update_nama," "$Data"; then
+	echo -e "[X] Data Penghuni \"$update_nama\" tidak ditemukan!"
+	read -p "Tekan ENTER untuk kembali ke menu"
+	return
+fi
+
+read -p "Status baru (Aktif/Menunggak): " new_status
+
+awk -F, -v u="$update_nama" -v n="$new_status" 'BEGIN {OFS=","} {
+if(tolower($1) == tolower(u)) { $5=n }
+	print $0
+}' "$Data" > "data/temp.csv" && mv "data/temp.csv" "$Data"
+echo "[V] Status diperbarui!";
+read -p "Tekan ENTER untuk kembali ke menu"
+}
+```
+
+```-v u="$update_nama"``` cara bash mengirim nilai variabel ke dalam awk.
+
+```BEGIN {OFS=","}``` mengatur output field separator. awk akan mengubah spasi jika kita mengedit kolom agar format csv tidak rusak. 
+
+```tolower($1) == tolower(u)``` logika case insensitive untuk meminimalisir error jika salah input.
+
+#### 8. Opsi 5: Cetak Laporan Keuangan
+
+```bash
+# opsi 5 (laporan keuangan)
+laporan_keuangan() {
+show_banner
+echo "       LAPORAN KEUANGAN    "
+echo "=============================="
+awk -F, '
+BEGIN {p=0; t=0} {
+if($5=="Aktif") p+=$3; else t+=$3
+}
+END {
+printf "Pemasukan (Aktif) : Rp%d\n", p
+printf "Tunggakan         : Rp%d\n", t
+print "-------------------------------------------"
+
+printf "Laporan %s | Masuk: Rp%d | Tunggak: Rp%d\n", strftime("%Y-%m-%d"), p, t > "rekap/laporan_bulanan.txt"
+}' "$Data"
+
+echo "Laporan disimpan di rekap"
+read -p "Tekan ENTER untuk kembali ke menu"
+}
+```
+
+```BEGIN {p=0; t=0}``` sebelum awk membaca, menginisialisasi variabel untuk pemasukan dan tunggakan dimulai dari angka 0. 
+
+```if($5=="Aktif") p+=$3; else t+=$3``` jika status "Aktif", nilai di kolom harga sewa ($3) ditambahkan ke variabel p, jika bukan (Menunggak) ditambahkan ke t.
+
+```strftime``` fungsi internal awk untuk mengambil tanggal sistem saat laporan dicetak. 
+
+#### 9. Opsi 6: Kelola Cron
+
+```bash
+# opsi 6 (Kelola Cron (Pengingat tahigan)
+kelola_cron() {
+while true; do
+show_banner
+echo "1. Lihat Cron | 2. Tambah | 3. Hapus | 4. Kembali"
+read -p "Pilih: " pilih
+case $pilih in
+1) crontab -l | grep "kost_slebew.sh"
+read -p "Tekan ENTER untuk kembali ke menu";;
+2) read -p "Jam (0-23): " h; read -p "Menit (0-59): " m
+path=$(realpath "$0")
+(crontab -l 2>/dev/null | grep -v "$path";
+echo "$m $h * * * $path --cek_tagihan") | crontab -
+echo "Cron ditambahkan!"
+read -p "Tekan ENTER untuk kembali ke menu";;
+3) crontab -l | grep -v "kost_slebew.sh" | crontab -
+echo "Cron dihapus!"
+read -p "Tekan ENTER untuk kembali ke menu" ;;
+4) break ;;
+
+esac
+done
+}
+```
+
+```realpath "$0"``` mengambil alamat lengkap dari skrip ```kost_slebew.sh``` agar cron job bisa menemukan file nya. 
+
+```2>/dev/null``` menghilangkan pesan error jika user belum punya jadwal cron sama sekali. 
+
+```| crontab -``` mengirim seluruh teks kembali ke sistem crontab untuk diaktifkan. 
+
+```crontab -l | grep -v "kost_slebew.sh" | crontab -``` mengambil semua jadwal, membuang barus yang mengandung nama skrip, lalu disimpan kembali. 
+
+#### 10. Menu utama dan opsi 7
+
+```bash
+while true; do
+show_banner
+echo " ID | OPTION"
+echo "--------------------------------------------------"
+echo " 1 | Tambah Penghuni Baru"
+echo " 2 | Hapus Penghuni"
+echo " 3 | Tampilkan Daftar Penghuni"
+echo " 4 | Update Status Penghuni"
+echo " 5 | Cetak Laporan Keuangan"
+echo " 6 | Kelola Cron (Pengingat tahigan)"
+echo " 7 | Exit Program"
+echo "--------------------------------------------------"
+read -p "Enter option (1-7): " option
+
+case $option in
+1) tambah_penghuni ;;
+2) hapus_penghuni ;;
+3) tampilkan_daftar ;;
+4) update_status ;;
+5) laporan_keuangan ;;
+6) kelola_cron ;;
+7) exit 0;;
+*) echo "Salah input!"; sleep 1 ;;
+
+esac
+done
+```
+
+Double semicolon (;;) penanda akhir dari satu blok pilihan agar bash tidak terus menjalankan perintah di bawahnya. 
+
+```7) exit 0;;``` mematikan skrip, angka 0 sebagai kode status standar di Linux yang memberitahu sistem operasi untuk mengentikan program dan tidak ada error yang terjadi. Logika ini sebagai cara untuk break perulangan while true. 
+
+```*) echo "Salah input!"; sleep 1 ;;``` simbol * untuk menangkap semua input selain angka 1-7. sleep 1 untuk memberi jeda 1 detik agar user membaca ```echo "Salah input!"``` sebelum layar dibersihkan oleh ```show_banner```.
+
+#### 11. Hasil output
+Hasil output pada opsi 1 jika input sesuai ketentuan:
+
+<img width="422" height="163" alt="Screenshot 2026-03-29 202314" src="https://github.com/user-attachments/assets/bb734e7c-e5f1-4100-86f3-11ab2e7d8c33" />
+
+Hasil output pada opsi 2 jika nama yang ingin dihapus ada di data:
+
+<img width="302" height="105" alt="image" src="https://github.com/user-attachments/assets/197cc97e-0aaa-430b-a009-73dfee086aeb" />
+
+Hasil output opsi 3:
+
+<img width="379" height="166" alt="image" src="https://github.com/user-attachments/assets/aa890478-4c3a-4cfa-a300-ed3a98380aae" />
+
+Hasil output opsi 4 jika nama yang ingin di-update ada di data:
+
+<img width="306" height="126" alt="image" src="https://github.com/user-attachments/assets/b536c253-34d8-45c0-846d-061c8b27dd21" />
+
+<img width="378" height="163" alt="image" src="https://github.com/user-attachments/assets/5db3cfce-0e90-4095-8cd5-3c1c4731a6cd" />
+
+
+#### 12. Kendala
